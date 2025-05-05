@@ -1,6 +1,6 @@
 # test.py
 import pytest
-from src.practica1 import lee_grafo  # Cambiá 'tu_modulo' por el nombre real del archivo .py
+from practica1 import lee_grafo  # Cambiá 'tu_modulo' por el nombre real del archivo .py
 
 def test_lee_grafo_stdin_basico():
     entrada = ['3', 'A', 'B', 'C', 'A B', 'B C', 'C B']
