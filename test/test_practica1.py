@@ -7,7 +7,7 @@ def test_lee_grafo():
     vertices_esperados = ['A', 'B', 'C']
     aristas_esperadas = [('A', 'B'), ('B', 'C'), ('C', 'B')]
     
-    vertices, aristas = lee_grafo(entrada)
+    vertices, aristas = test_lee_grafo(entrada)
     
     assert vertices == vertices_esperados
     assert aristas == aristas_esperadas
@@ -17,7 +17,7 @@ def test_lee_grafo_sin_aristas():
     vertices_esperados = ['X', 'Y']
     aristas_esperadas = []
     
-    vertices, aristas = lee_grafo(entrada)
+    vertices, aristas = test_lee_grafo(entrada)
     
     assert vertices == vertices_esperados
     assert aristas == aristas_esperadas
@@ -27,7 +27,7 @@ def test_lee_grafo_con_espacios_extra():
     vertices_esperados = ['A', 'B']
     aristas_esperadas = [('A', 'B'), ('B', 'A')]
     
-    vertices, aristas = lee_grafo(entrada)
+    vertices, aristas = test_lee_grafo(entrada)
     
     assert vertices == vertices_esperados
     assert aristas == aristas_esperadas
