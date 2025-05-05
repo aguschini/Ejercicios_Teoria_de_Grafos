@@ -1,8 +1,8 @@
 # test.py
 import pytest
-from practica1 import lee_grafo  # Cambiá 'tu_modulo' por el nombre real del archivo .py
+from src.resolucion_practica import cuenta_grafo  # Cambiá 'tu_modulo' por el nombre real del archivo .py
 
-def test_lee_grafo_stdin_basico():
+def test_lee_grafo():
     entrada = ['3', 'A', 'B', 'C', 'A B', 'B C', 'C B']
     vertices_esperados = ['A', 'B', 'C']
     aristas_esperadas = [('A', 'B'), ('B', 'C'), ('C', 'B')]

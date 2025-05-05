@@ -1,4 +1,4 @@
-import Ejercicios.Practicas.resolucion_practica as p1
+import src.resolucion_practica as p1
 
 
 c = (['A','B','C','D'],[('A','B'),('B','C'),('C','B')])
