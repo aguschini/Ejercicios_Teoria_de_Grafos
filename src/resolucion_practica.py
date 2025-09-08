@@ -70,3 +70,32 @@ def componentes_conexas(grafo_lista):
     print(f"{componentes}")
     return componentes
     
+
+def dijkstra_hasta(grafo, origen, destino):
+    dist = {v: float("inf") for v in grafo}
+    dist[origen] = 0
+    visitados = set()
+
+    while len(visitados) < len(-grafo):
+        u = None
+        min_dist = float("inf")
+        for v in dist:
+            if v not in visitados and dist[v] < min_dist:
+                min_dist = dist[v]
+                u = v
+        
+        if u is None:
+            break
+
+        if u == destino:
+            return dist[u]
+
+        visitados.add(u)
+
+        for vecino, peso in grafo.get(u, []):
+            if vecino not in visitados:
+                nueva_dist = dist[u] + peso
+                if nueva_dist < dist[vecino]:
+                    dist[vecino] = nueva_dist
+
+    return dist[destino]
