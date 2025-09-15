@@ -133,9 +133,10 @@ def lee_grafo(entrada):
 def dijkstra_hasta(grafo, origen, destino):
     dist = {v: float("inf") for v in grafo}
     dist[origen] = 0
+    caminos = {v: None for v in grafo}  # Para reconstruir el camino
     visitados = set()
 
-    while len(visitados) < len(-grafo):
+    while len(visitados) < len(grafo):
         u = None
         min_dist = float("inf")
         for v in dist:
@@ -147,14 +148,21 @@ def dijkstra_hasta(grafo, origen, destino):
             break
 
         if u == destino:
-            return dist[u]
+            # Reconstrucción del camino desde el destino al origen
+            camino = []
+            while u is not None:
+                camino.append(u)
+                u = caminos[u]
+            camino.reverse()  # Invertir para que el camino vaya del origen al destino
+            return dist[destino], camino
 
         visitados.add(u)
 
-        for vecino, peso in grafo.get(u, []):
+        for vecino, peso in grafo[u]:
             if vecino not in visitados:
                 nueva_dist = dist[u] + peso
                 if nueva_dist < dist[vecino]:
                     dist[vecino] = nueva_dist
+                    caminos[vecino] = u
 
-    return dist[destino]
+    return None, None  # Si no hay camino, retornamos None

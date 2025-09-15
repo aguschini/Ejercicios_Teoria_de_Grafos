@@ -1,6 +1,6 @@
 # test_practica3.py
 
-from src.practica3 import (
+from src.resolucion_practica import (
     dijkstra_hasta,
 )
 
