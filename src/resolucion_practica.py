@@ -1,75 +1,134 @@
-def cuenta_grado(grafo_lista):
-    salida = {}
-    vertices, aristas = grafo_lista
+def cuenta_grado(grafo):
+    vertices, aristas = grafo
+    grados = {v: 0 for v in vertices}
+    for v1, v2 in aristas:
+        grados[v1] += 1
+        grados[v2] += 1
+    return grados
 
-    for vertice in vertices:
-        salida[vertice] = 0
+def vertice_aislado(grafo):
+    vertices, aristas = grafo
+    
+    # Creamos un conjunto vacío para guardar vértices conectados
+    conectados = set()
+    
+    # Recorremos las aristas y agregamos los vértices que aparecen en ellas
+    for origen, destino in aristas:
+        conectados.add(origen)
+        conectados.add(destino)
+    
+    # Ahora comparamos con todos los vértices para encontrar los que no están conectados
+    aislados = [v for v in vertices if v not in conectados]
+    
+    return aislados
 
-    for arista in aristas:
-        u, v = arista
-        if u in salida:
-            salida[u] += 1
-        if v in salida:
-            salida[v] += 1
 
-    print(f"{salida}")
 
-def vertice_aislado(grafo_lista):
-    salida = {}
-    vertices, aristas = grafo_lista
+def vertice_aislado(grafo):
+    vertices = set(grafo[0])
+    aristas = set()
+    for arista in grafo[1]:
+        aristas.add(arista[0])
+        aristas.add(arista[1])
+    
+    return list(vertices - aristas)
 
-    for vertice in vertices:
-        salida[vertice] = 0
+# src/resolucion_practica.py
 
-    for arista in aristas:
-        u, v = arista
-        if u in salida:
-            salida[u] += 1
-        if v in salida:
-            salida[v] += 1
-  
-    verticecero = []
-    i = 0
-    for vertice in vertices:
-        if salida[vertice] == 0:         
-            verticecero[i] = vertice
-            i += 1
-            print(f"{verticecero}")
+def es_conexo(grafo_lista):
+    componentes = componentes_conexas(grafo_lista)
+    return len(componentes) == 1
 
+def es_completo(grafo):
+    vertices, aristas = grafo
+    for i in range(len(vertices)):
+        for j in range(i + 1, len(vertices)):
+            v1, v2 = vertices[i], vertices[j]
+            if not ((v1, v2) in aristas or (v2, v1) in aristas):
+                return False
+    return True
+
+
+def aristas_de(grafo, vertice):
+    """
+    Devuelve una lista de aristas conectadas al vértice especificado.
+    El grafo se representa como una tupla (vértices, aristas).
+    """
+    vertices, aristas = grafo
+    return [arista for arista in aristas if vertice in arista]
+
+# src/resolucion_practica.py
+
+def grafo_inducido(grafo, vertices_inducidos):
+    """
+    Devuelve el subgrafo inducido por el conjunto de vértices especificados.
+    El grafo es una tupla (vértices, aristas), y se retorna el subgrafo con los vértices y aristas
+    que están en el conjunto de vértices inducidos.
+    """
+    vertices, aristas = grafo
+    vertices_inducidos_set = set(vertices_inducidos)
+    
+    # Filtrar las aristas que solo conectan vértices en el conjunto de vértices inducidos
+    aristas_inducidas = [arista for arista in aristas if arista[0] in vertices_inducidos_set and arista[1] in vertices_inducidos_set]
+    
+    # Retornar el subgrafo
+    return vertices_inducidos, aristas_inducidas
+
+# src/resolucion_practica.py
+
+def grafo_complementario(grafo):
+    vertices, aristas = grafo
+    complementario = []
+    for i in range(len(vertices)):
+        for j in range(i + 1, len(vertices)):
+            v1, v2 = vertices[i], vertices[j]
+            if not ((v1, v2) in aristas or (v2, v1) in aristas):
+                complementario.append((v1, v2))
+    return vertices, complementario
 
 
 def componentes_conexas(grafo_lista):
-    vertices = grafo_lista[0]
-    aristas = grafo_lista[1]
+    vertices, aristas = grafo_lista
 
-    adyacencia = {v: [] for v in vertices}
+    # Creamos el diccionario de adyacencias
+    adyacentes = {v: [] for v in vertices}
+    for origen, destino in aristas:
+        adyacentes[origen].append(destino)
+        adyacentes[destino].append(origen)  # no dirigido
 
-    for u, v in aristas:
-        adyacencia[u].append(v)
-        adyacencia[v].append(u) 
-    
     visitados = set()
     componentes = []
 
-    for vertice in vertices:
-        if vertice not in visitados:
+    # Función auxiliar para DFS(deep first search busca en grafos)
+    def dfs(v, componente):
+        visitados.add(v)
+        componente.append(v)
+        for vecino in adyacentes[v]:
+            if vecino not in visitados:
+                dfs(vecino, componente)
+
+    # Recorremos todos los vértices
+    for v in vertices:
+        if v not in visitados:
             componente = []
-            pila = [vertice]
-            
-            while pila:
-                v = pila.pop()
-                if v not in visitados:
-                    visitados.add(v)
-                    componente.append(v)
-                    for vecino in adyacencia[v]:
-                        if vecino not in visitados:
-                            pila.append(vecino)
-            
+            dfs(v, componente)
             componentes.append(componente)
-    
-    print(f"{componentes}")
+
     return componentes
+
+
+def lee_grafo(entrada):
+    num_vertices = int(entrada[0])
+    vertices = entrada[1:num_vertices + 1]
+    aristas = []
+
+    for arista in entrada[num_vertices + 1:]:
+        v1, v2 = arista.split()
+        aristas.append((v1, v2))
     
+    return vertices, aristas
+
+
 
 def dijkstra_hasta(grafo, origen, destino):
     dist = {v: float("inf") for v in grafo}

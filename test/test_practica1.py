@@ -1,6 +1,6 @@
 # test.py
 import pytest
-from src.practica1 import lee_grafo
+from src.resolucion_practica import lee_grafo
 
 def test_lee_grafo_basico():
     entrada = ['3', 'A', 'B', 'C', 'A B', 'B C', 'C B']

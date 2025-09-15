@@ -42,3 +42,5 @@ if __name__ == "__main__":
     # Grafo complementario
     print("\nGrafo complementario:")
     print(grafo_complementario(grafo))
+
+    

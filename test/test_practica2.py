@@ -1,7 +1,7 @@
 # test_practica2.py
 
 import pytest
-from src.practica2 import (
+from src.resolucion_practica import (
     cuenta_grado,
     vertice_aislado,
     componentes_conexas,
